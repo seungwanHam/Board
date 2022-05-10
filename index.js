@@ -5,7 +5,8 @@ const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const session = require('express-session');
-const passport = require('./config/passport'); 
+const passport = require('./config/passport');
+const util = require('./util');
 const app = express();
 
 // DB setting
@@ -40,6 +41,8 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
 app.use(flash());
 app.use(session({secret:'MySecret', resave:true, saveUninitialized:true}));
+
+// Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -52,9 +55,8 @@ app.use(function(req,res,next){
 
 // Routes
 app.use('/', require('./routes/home'));
-app.use('/posts', require('./routes/posts'));
+app.use('/posts', util.getPostQueryString, require('./routes/posts'));
 app.use('/users', require('./routes/users'));
-
 
 // Port setting
 app.listen(PORT, function(){
