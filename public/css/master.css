@@ -1,29 +1,48 @@
 body {
   font-family: 'Open Sans', sans-serif;
 }
-
 .breadcrumb-item {
   font-size: 0.8em !important;
 }
-
 .ellipsis{
   display: block;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* 1 */
+  text-overflow: ellipsis;
 }
 
 .board-table {
   table-layout: fixed;
 }
-
+.board-table .numId,
+.board-table .views{
+  width: 60px;
+  text-align: center;
+}
+.board-table .author,
 .board-table .date {
   width: 100px;
+  text-align: center;
+}
+.board-table .title-container:hover .title-comments,
+.board-table .title-container:hover .title-text,
+.board-table .title-container:hover .title-attachment
+{
+  text-decoration: underline;
 }
 
-.post-body{
-  white-space: pre-line; /* 2 */
+.post-body,
+.comment-text {
+  white-space: pre-line;
+}
+
+.comment-text {
+  margin-left: 60px;
+}
+
+.d-block {
+  margin-left: 60px;
 }
 
 .post-info{
@@ -34,11 +53,24 @@ body {
   width: 400px;
 }
 
-.board-table {
-  table-layout: fixed;
+.post-index-tool {
+  max-width: 450px;
+}
+.post-index-tool input[type='text']{
+  max-width: 130px;
 }
 
-.board-table .author,
-.board-table .date {
-  width: 100px;
+.highlighted {
+  background-color: yellow;
+}
+
+.comment-edit,
+.comment-reply,
+.comment-edit-enabled .comment-show {
+  display:none;
+}
+
+.comment-edit-enabled .comment-edit,
+.comment-reply-enabled .comment-reply {
+  display:inherit;
 }

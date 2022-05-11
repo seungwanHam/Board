@@ -1,12 +1,28 @@
 const mongoose = require('mongoose');
+const Counter = require('./Counter');
 
 // schema
-const postSchema = mongoose.Schema({ // Post의 schema는 title, body, author, createdAt, updatedAt으로 구성이 되어 있습니다.
+const postSchema = mongoose.Schema({
   title:{type:String, required:[true,'Title is required!']},
   body:{type:String, required:[true,'Body is required!']},
   author:{type:mongoose.Schema.Types.ObjectId, ref:'user', required:true},
-  createdAt:{type:Date, default:Date.now}, // default 항목으로 기본 값을 지정할 수 있습니다. 함수명을 넣으면 해당 함수의 return이 기본값이 됩니다.
+  views:{type:Number, default:0},
+  numId:{type:Number},
+  attachment:{type:mongoose.Schema.Types.ObjectId, ref:'file'},
+  createdAt:{type:Date, default:Date.now},
   updatedAt:{type:Date},
+});
+
+postSchema.pre('save', async function (next){
+  var post = this;
+  if(post.isNew){
+    counter = await Counter.findOne({name:'posts'}).exec();
+    if(!counter) counter = await Counter.create({name:'posts'});
+    counter.count++;
+    counter.save();
+    post.numId = counter.count;
+  }
+  return next();
 });
 
 // model & export

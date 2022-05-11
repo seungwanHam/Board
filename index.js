@@ -19,7 +19,6 @@ const connectDB = async () => {
           useFindAndModify: false,
           useCreateIndex: true
       })
-
       console.log(`MongoDB connected : ${con.connection.host}`);
   }catch(err){
       console.log(err);
@@ -50,13 +49,17 @@ app.use(passport.session());
 app.use(function(req,res,next){
   res.locals.isAuthenticated = req.isAuthenticated();
   res.locals.currentUser = req.user;
+  res.locals.util = util;
   next();
 });
+
 
 // Routes
 app.use('/', require('./routes/home'));
 app.use('/posts', util.getPostQueryString, require('./routes/posts'));
 app.use('/users', require('./routes/users'));
+app.use('/comments', util.getPostQueryString, require('./routes/comments'));
+app.use('/files', require('./routes/files'));
 
 // Port setting
 app.listen(PORT, function(){
