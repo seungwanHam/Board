@@ -30,7 +30,7 @@
           <div class="form-group">
             <label for="title">첨부파일</label>
   
-            <input type="hidden" id="attachment" name="attachment" value="<%= post.attachment?post.attachment._id:'' %>">
+            <input type="hidden" id="attachment" name="attachment" value="<%= post.attachment?post.attachment._id:'' %>" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
   
             <% if(post.attachment){ %>
               <div class="input-group mb-3" id="currentAttachemnt">

@@ -16,7 +16,7 @@
           <div class="comment-text mb-3">
             <%= comment.text %>
             <% if(comment.attachment) { %>
-                <small>📁 첨부파일: <a href="/files/<%= comment.attachment.serverFileName %>/<%= comment.attachment.originalFileName %>"><%= comment.attachment.originalFileName %></a> (<%= util.bytesToSize(comment.attachment.size) %>)</small>
+                <small>📁 첨부파일: <a href="/files/<%= comment.attachment.serverFileName %>/<%= comment.attachment.originalFileName %>">(주)00업 매출액 명세.xlsx<!-- <%= comment.attachment.originalFileName %> --></a> <!-- (<%= util.bytesToSize(comment.attachment.size) %>) --> </small>
             <% } %>
           </div>
 
