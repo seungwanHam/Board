@@ -3,8 +3,8 @@ const Counter = require('./Counter');
 
 // schema
 const postSchema = mongoose.Schema({
-  title:{type:String, required:[true,'Title is required!']},
-  body:{type:String, required:[true,'Body is required!']},
+  title:{type:String, required:[true,'제목은 필수입니다.']},
+  body:{type:String, required:[true,'본문은 필수입니다.']},
   author:{type:mongoose.Schema.Types.ObjectId, ref:'user', required:true},
   views:{type:Number, default:0},
   numId:{type:Number},

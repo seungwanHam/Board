@@ -1,13 +1,17 @@
 const express  = require('express');
 const router = express.Router();
+const multer = require('multer');
+const upload = multer({ dest: 'uploadedFiles/' });
 const Comment = require('../models/Comment');
 const Post = require('../models/Post');
+const File = require('../models/File');
 const util = require('../util');
 
 // create
-router.post('/', util.isLoggedin, checkPostId, function(req, res){
+router.post('/', util.isLoggedin, upload.single('attachment'), checkPostId, async function(req, res){
+  var attachment = req.file ? await File.createNewInstance(req.file, req.user._id):undefined;
   var post = res.locals.post;
-
+  req.body.attachment = attachment;
   req.body.author = req.user._id;
   req.body.post = post._id;
 
@@ -16,6 +20,10 @@ router.post('/', util.isLoggedin, checkPostId, function(req, res){
       req.flash('commentForm', { _id:null, form:req.body });
       req.flash('commentError', { _id:null, parentComment:req.body.parentComment, errors:util.parseError(err) });
     }
+    if(attachment) {
+      attachment.postId = post._id;
+      attachment.save();
+    }
     return res.redirect('/posts/'+post._id+res.locals.getPostQueryString());
   });
 });
@@ -23,7 +31,6 @@ router.post('/', util.isLoggedin, checkPostId, function(req, res){
 // update
 router.put('/:id', util.isLoggedin, checkPermission, checkPostId, function(req, res){
   var post = res.locals.post;
-
   req.body.updatedAt = Date.now();
   Comment.findOneAndUpdate({_id:req.params.id}, req.body, {runValidators:true}, function(err, comment){
     if(err){

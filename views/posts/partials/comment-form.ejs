@@ -6,7 +6,7 @@
  parentComment
 */%>
 
-<form action="<%= actionUrl %><%= getPostQueryString(true) %>"method="post">
+<form action="<%= actionUrl %><%= getPostQueryString(true) %>" enctype="multipart/form-data" method="post">
   <fieldset <%= !isAuthenticated?'disabled':'' %>>
     <% if(parentComment){ %>
       <input type="hidden" name="parentComment" value="<%= parentComment %>">
@@ -15,6 +15,13 @@
       <div class="col-8">
         <textarea name="text" rows="2" class="form-control <%= (commentError._id == comment._id && commentError.parentComment == parentComment && commentError.errors.text)?'is-invalid':'' %>"><%= (commentForm._id == comment._id)?commentForm.form.text:comment.text %></textarea>
       </div>
+
+      <!-- Test 추가 -->
+      <div class="form-group">
+        <label for="attachment">첨부파일</label>
+        <input type="file" name="attachment" class="form-control-file" id="attachment">
+      </div>
+
       <div class="col-4">
         <% if(comment._id){ %>
           <button type="submit" class="btn btn-primary h-100 mr-2 pl-4 pr-4">수정</button>

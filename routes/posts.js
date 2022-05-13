@@ -97,6 +97,7 @@ router.post('/', util.isLoggedin, upload.single('attachment'), async function (r
   var attachment = req.file ? await File.createNewInstance(req.file, req.user._id) : undefined;
   req.body.attachment = attachment;
   req.body.author = req.user._id;
+  
   Post.create(req.body, function (err, post) {
     if (err) {
       req.flash('post', req.body);

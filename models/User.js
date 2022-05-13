@@ -5,25 +5,25 @@ const bcrypt = require('bcryptjs');
 const userSchema = mongoose.Schema({
   username:{
     type:String,
-    required:[true,'Username is required!'],
-    match:[/^.{3,12}$/,'Should be 3-12 characters!'],
+    required:[true,'사용자 명은 필수입니다.'],
+    match:[/^.{3,12}$/,'3글자 이상 12글자 이하 문자로 입력바랍니다.'],
     trim:true,
     unique:true
   },
   password:{
     type:String,
-    required:[true,'Password is required!'],
+    required:[true,'비밀번호는 필수입니다.'],
     select:false
   },
   name:{
     type:String,
-    required:[true,'Name is required!'],
-    match:[/^.{4,12}$/,'Should be 4-12 characters!'],
+    required:[true,'이름은 필수입니다.'],
+    match:[/^.{4,12}$/,'3글자 이상 12글자 이하 문자로 입력바랍니다.'],
     trim:true
   },
   email:{
     type:String,
-    match:[/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,'Should be a vaild email address!'],
+    match:[/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,'유효하지 않은 이메일 입니다.'],
     trim:true
   }
 },{
@@ -49,38 +49,38 @@ userSchema.virtual('newPassword')
 
 // password validation
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/;
-const passwordRegexErrorMessage = 'Should be minimum 8 characters of alphabet and number combination!';
+const passwordRegexErrorMessage = '영문과 숫자의 조합으로 최소 8자 이상이어야 합니다.';
 userSchema.path('password').validate(function(v) {
   var user = this;
 
   // create user
   if(user.isNew){
     if(!user.passwordConfirmation){
-      user.invalidate('passwordConfirmation', 'Password Confirmation is required.');
+      user.invalidate('비밀번호 확인', '비밀번호 확인이 필요합니다.');
     }
 
     if(!passwordRegex.test(user.password)){
       user.invalidate('password', passwordRegexErrorMessage);
     }
     else if(user.password !== user.passwordConfirmation) {
-      user.invalidate('passwordConfirmation', 'Password Confirmation does not matched!');
+      user.invalidate('비밀번호 확인', '비밀번호가 일치하지 않습니다.');
     }
   }
 
   // update user
   if(!user.isNew){
     if(!user.currentPassword){
-      user.invalidate('currentPassword', 'Current Password is required!');
+      user.invalidate('현재 비밀번호', '현재 비밀번호가 필요합니다.');
     }
     else if(!bcrypt.compareSync(user.currentPassword, user.originalPassword)){
-      user.invalidate('currentPassword', 'Current Password is invalid!');
+      user.invalidate('현재 비밀번호', '현재 비밀번호가 잘못되었습니다.');
     }
 
     if(user.newPassword && !passwordRegex.test(user.newPassword)){
-      user.invalidate("newPassword", passwordRegexErrorMessage);
+      user.invalidate("새 비밀번호", passwordRegexErrorMessage);
     }
     else if(user.newPassword !== user.passwordConfirmation) {
-      user.invalidate('passwordConfirmation', 'Password Confirmation does not matched!');
+      user.invalidate('비밀번호 확인', '비밀번호 확인이 일치하지 않습니다.');
     }
   }
 });

@@ -7,6 +7,7 @@ const commentSchema = mongoose.Schema({
   parentComment:{type:mongoose.Schema.Types.ObjectId, ref:'comment'},
   text:{type:String, required:[true,'text is required!']},
   isDeleted:{type:Boolean},
+  attachment:{type:mongoose.Schema.Types.ObjectId, ref:'file'},
   createdAt:{type:Date, default:Date.now},
   updatedAt:{type:Date},
 },{
@@ -19,4 +20,4 @@ commentSchema.virtual('childComments')
 
 // model & export
 const Comment = mongoose.model('comment', commentSchema);
-module.exports = Comment;
+module.exports = Comment;``

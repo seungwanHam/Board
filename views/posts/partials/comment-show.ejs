@@ -13,7 +13,13 @@
       <div class="col-3 col-md-2 col-lg-1 pl-4"><%= comment.author.username %></div>
       <div id="comment-<%= comment._id %>" class="col-9 col-md-10 col-lg-11 <%= (commentError._id == comment._id)?'comment-edit-enabled':'' %> <%= (commentError.parentComment == comment._id)?'comment-reply-enabled':'' %>">
         <div class="comment-show">
-          <div class="comment-text mb-3"><%= comment.text %></div>
+          <div class="comment-text mb-3">
+            <%= comment.text %>
+            <% if(comment.attachment) { %>
+                <small>📁 첨부파일: <a href="/files/<%= comment.attachment.serverFileName %>/<%= comment.attachment.originalFileName %>"><%= comment.attachment.originalFileName %></a> (<%= util.bytesToSize(comment.attachment.size) %>)</small>
+            <% } %>
+          </div>
+
           <small class="d-block">
             ( 작성날짜: <span data-date-time="<%= comment.createdAt %>"></span>
             <% if(comment.updatedAt){ %>
